@@ -1,7 +1,7 @@
 import io
 from docutils import utils
 from docutils.core import Publisher
-from docutils.nodes import Element
+from docutils.nodes import Element, Text
 
 
 def lint(content, filepath=None):
@@ -51,6 +51,7 @@ def lint(content, filepath=None):
         data.message = Element.astext(data.children[0])
         data.full_message = Element.astext(data)
 
+        data.children[1].children[0] = Text('hi')
         # Save the error
         errors.append(data)
     document.reporter.attach_observer(error_collector)
@@ -77,6 +78,7 @@ def lint(content, filepath=None):
         transform = transform_class(transformer.document, startnode=pending)
         transform.apply(**kwargs)
         transformer.applied.append((priority, transform_class, pending, kwargs))
+    print 'output', document.children[1]
     return errors
 
 
